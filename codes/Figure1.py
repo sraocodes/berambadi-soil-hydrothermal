@@ -19,8 +19,8 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # ================= CONFIGURATION =================
-DATA_DIR = '/home/sathya-iisc/Documents/TIMESERIES/Aarya/V6'
-MAP_BASE = "/home/sathya-iisc/Documents/TIMESERIES/V6Analysis"
+DATA_DIR = '.'
+MAP_BASE = "."
 SHP_INDIA = f"{MAP_BASE}/india_India_Country_Boundary/india_India_Country_Boundary.shp"
 SHP_STATES = f"{MAP_BASE}/india_India_Country_Boundary/State.shp"
 SHP_BERA = f"{MAP_BASE}/Berambadi.shp"
