@@ -14,7 +14,7 @@ from mpl_toolkits.axes_grid1.inset_locator import inset_axes, mark_inset
 # ==========================================
 # 1. SETUP
 # ==========================================
-DATA_PATH = '/home/sathya-iisc/Documents/TIMESERIES/Aarya/V6/2017_V6.csv'  # V6 path
+DATA_PATH = '../2017_V6.csv'  # V6 path
 OUT_DIR = './section2_output'
 os.makedirs(OUT_DIR, exist_ok=True)
 
