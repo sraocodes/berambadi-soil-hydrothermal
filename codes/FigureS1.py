@@ -22,8 +22,8 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # ================= CONFIGURATION =================
-DATA_DIR = '/home/sathya-iisc/Documents/TIMESERIES/Aarya/V6'
-OUT_DIR = '/home/sathya-iisc/Documents/TIMESERIES/AaryaOUT'
+DATA_DIR = '.'
+OUT_DIR = '.'
 os.makedirs(OUT_DIR, exist_ok=True)
 
 # PLOT STYLE
