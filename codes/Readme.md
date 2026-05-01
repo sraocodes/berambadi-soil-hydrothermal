@@ -1,184 +1,77 @@
-# Soil Moisture & Climate Dataset (2016–2025)
-**Version 6 (V6) - Curated & Quality Controlled**
+# Berambadi Soil Hydrothermal Dataset (2016–2025) — Code
 
-## Overview
-This dataset provides **15-minute interval environmental measurements** collected between **January 2016 and June 2025** at the Berambadi/Bechanahalli field station in southern India.
+Python code accompanying the dataset:
 
-It contains:
-- Soil moisture (SM)
-- Electrical conductivity (EC) / Relative dielectric permittivity (RDP)
-- Soil temperature (Temp) at multiple depths (5 cm, 15 cm, 50 cm)
-- Precipitation
+> Rao, S. et al. (2026). *A decade of high-frequency soil hydrothermal observations in a semi-arid monsoon catchment (2016–2025)*. Zenodo. https://doi.org/10.5281/zenodo.18409640
 
-The dataset is distributed as **yearly CSV files** (`2016_V6.csv`, `2017_V6.csv`, …, `2025_V6.csv`).
+The dataset contains 15-minute soil moisture, temperature, electrical conductivity / relative dielectric permittivity, and precipitation from the Berambadi catchment, Karnataka, India.
 
 ---
 
-## Data Curation Notes
+## Files
 
-**Surface (5 cm) Sensor Selection:**
-- The original raw data contained redundant sensors (A and B) at 5 cm depth for quality assurance.
-- A **physics-based selection algorithm** was applied to each year:
-  1. **Anti-noise filter**: Removed physically impossible values (T < 0°C or T > 60°C)
-  2. **Flatline detection**: Rejected sensors stuck at constant values
-  3. **Variance check**: Selected sensor with realistic diurnal variation (Jan–Mar dry season)
-  4. **Completeness check**: Preferred sensor with fewer data gaps
-  5. **Depth consistency**: Verified surface shows higher variance than deep soil
-- The 5 cm columns in this dataset represent the **best unified sensor** for each year.
-- No sensor swapping was performed; depth labels are preserved as recorded.
+### `getting_started.py`
+Quickstart script. Loads one year of data, prints a completeness summary, and plots the four core variables (rainfall, soil moisture, temperature, EC/RDP) at 5 cm and 50 cm depths. **Run this first.**
 
-**Result:** A single, high-quality time series for surface measurements.
+### `curate_Data.py`
+Sensor-selection algorithm. Converts the raw multi-sensor records (V4) into the unified, quality-controlled annual CSV files (V6) released with the dataset. Implements the physics-based selection logic described in Section 2.3 of the paper (anti-noise filter, flatline detection, variance check, depth consistency). Most users won't need to run this — the released CSV files are already curated. Provided for transparency and reproducibility.
 
----
+### `Figure1.py`
+Generates **Figure 1** of the paper: study site location and temporal data availability. Three panels — regional context (India / Karnataka), Berambadi catchment with sensor location, and annual data coverage bar chart. Requires shapefiles (see "Notes" below).
 
-## Variables & Units
+### `Figure2.py`
+Generates **Figure 2** of the paper: high-frequency soil hydrothermal dynamics during the 2017 monsoon-to-dry transition (August–October). Five-panel time series of rainfall, soil moisture, electrical conductivity, soil temperature, and rapid wetting rate, with an inset showing a single storm event.
 
-| Column        | Description                                           | Unit                     | Notes |
-|---------------|-------------------------------------------------------|--------------------------|-------|
-| timestamp     | Date & time of measurement (local)                    | YYYY-MM-DD HH:MM:SS      | 15 min intervals |
-| Temp_5cm      | Soil temperature at 5 cm depth                        | °C                       | Unified best sensor |
-| SM_5cm        | Soil moisture at 5 cm depth                           | % (vol. water content)   | Unified best sensor |
-| EC_5cm        | Electrical conductivity at 5 cm depth                 | dS/m (deciSiemens/m)     | Available 2016–2021 |
-| RDP_5cm       | Relative dielectric permittivity at 5 cm              | dimensionless            | Available 2021–2025 |
-| Temp_15cm     | Soil temperature at 15 cm depth                       | °C                       | Available 2021–2025 |
-| SM_15cm       | Soil moisture at 15 cm depth                          | %                        | Available 2021–2025 |
-| EC_15cm       | Electrical conductivity at 15 cm depth                | dS/m                     | Available 2021 only |
-| RDP_15cm      | Relative dielectric permittivity at 15 cm depth       | dimensionless            | Available 2021–2025 |
-| Temp_50cm     | Soil temperature at 50 cm depth                       | °C                       | Available 2016–2025 |
-| SM_50cm       | Soil moisture at 50 cm depth                          | %                        | Available 2016–2025 |
-| EC_50cm       | Electrical conductivity at 50 cm depth                | dS/m                     | Available 2016–2021 |
-| RDP_50cm      | Relative dielectric permittivity at 50 cm depth       | dimensionless            | Available 2021–2025 |
-| Precipitation | Rainfall                                              | mm per 15 min            | Available 2016–2025 |
+### `Figure3.py`
+Generates **Figure 3** of the paper: precipitation–percolation coupling dynamics. Two panels — (a) percolation probability versus rainfall event magnitude, and (b) percolation probability versus antecedent surface moisture state. Iterates over all annual files and aggregates 916 rainfall events.
+
+### `FigureS1.py`
+Generates **Figure A1** of the appendix: technical validation of soil hydrothermal consistency across the decade. Three panels — thermal inversion frequency, vertical connectivity, and hydraulic regime.
+
+### `FigureS2.py`
+Generates **Figure A2** of the appendix: validation of EC–soil moisture coupling at 50 cm depth across the 2021 sensor transition (native EC sensors vs calibrated dielectric permittivity sensors).
 
 ---
 
-## Yearly Data Summary
+## Quick start
 
-| Year | Rows   | Coverage   | Columns Present | Notes |
-|------|--------|------------|-----------------|-------|
-| 2016 | 35,137 | Jan–Dec | SM, EC, Temp, Precipitation | Full year |
-| 2017 | 35,027 | Jan–Dec | SM, EC, Temp, Precipitation | Full year |
-| 2018 | 33,309 | Jan–Dec | SM, EC, Temp, Precipitation | Full year |
-| 2019 | 22,620 | Jan–Dec | SM, EC, Temp, Precipitation | Full year |
-| 2020 | 7,733 | Oct–Dec | SM, EC, Temp, Precipitation | Only 3 months |
-| 2021 | 32,392 | Jan–Dec | SM, EC, Temp, Precipitation | Full year |
-| 2022 | 33,064 | Jan–Dec | SM, RDP, Temp, Precipitation | Full year |
-| 2023 | 34,480 | Jan–Dec | SM, RDP, Temp, Precipitation | Full year |
-| 2024 | 35,080 | Jan–Dec | SM, RDP, Temp, Precipitation | Full year |
-| 2025 | 17,316 | Jan–Jun | SM, RDP, Temp, Precipitation | Partial year |
+1. Download the data from Zenodo: https://doi.org/10.5281/zenodo.18409640
+2. Install dependencies:
+   ```
+   pip install pandas numpy matplotlib scipy seaborn geopandas
+   ```
+3. Open any script and edit the `DATA_DIR` variable at the top to point to the folder containing the annual CSV files.
+4. Run `getting_started.py` first to confirm the data loads correctly.
 
 ---
 
-## Data Completeness (% Non-Missing Values)
+## Notes
 
-| Year | SM_5cm | EC_5cm | RDP_5cm | Temp_5cm | SM_15cm | EC_15cm | RDP_15cm | Temp_15cm | SM_50cm | EC_50cm | RDP_50cm | Temp_50cm | Precipitation |
-|------|------|------|------|------|------|------|------|------|------|------|------|------|------|
-| 2016 | 100.0 | 100.0 | — | 100.0 | — | — | — | — | 100.0 | 100.0 | — | 100.0 | 100.0 |
-| 2017 | 100.0 | 100.0 | — | 100.0 | — | — | — | — | 100.0 | 100.0 | — | 100.0 | 100.0 |
-| 2018 | 76.1 | 76.1 | — | 76.1 | — | — | — | — | 99.8 | 99.8 | — | 99.8 | 100.0 |
-| 2019 | 99.6 | 99.6 | — | 99.6 | — | — | — | — | 98.2 | 78.6 | — | 78.6 | 100.0 |
-| 2020 | 100.0 | 100.0 | — | 100.0 | — | — | — | — | 100.0 | 100.0 | — | 100.0 | 100.0 |
-| 2021 | 32.9 | 32.3 | — | 54.8 | 44.9 | — | 44.9 | 44.9 | 100.0 | 50.9 | 44.9 | 100.0 | 100.0 |
-| 2022 | 100.0 | — | 100.0 | 100.0 | 100.0 | — | 100.0 | 100.0 | 100.0 | — | 100.0 | 100.0 | 100.0 |
-| 2023 | 100.0 | — | 100.0 | 100.0 | 100.0 | — | 100.0 | 100.0 | 100.0 | — | 100.0 | 100.0 | 91.6 |
-| 2024 | 100.0 | — | 100.0 | 100.0 | 100.0 | — | 100.0 | 100.0 | 100.0 | — | 100.0 | 100.0 | 99.7 |
-| 2025 | 100.0 | — | 100.0 | 100.0 | 100.0 | — | 100.0 | 100.0 | 100.0 | — | 100.0 | 100.0 | 99.7 |
-
----
-
-## Column Availability Across Years
-
-| Column | 2016 | 2017 | 2018 | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2025 |
-|--------|---|---|---|---|---|---|---|---|---|---|
-| Temp_5cm | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| SM_5cm | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| EC_5cm | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | — | — | — |
-| RDP_5cm | — | — | — | — | — | — | ✓ | ✓ | ✓ | ✓ |
-| Temp_15cm | — | — | — | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
-| SM_15cm | — | — | — | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
-| EC_15cm | — | — | — | — | — | ✓ | — | — | — | — |
-| RDP_15cm | — | — | — | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Temp_50cm | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| SM_50cm | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| EC_50cm | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | — | — | — |
-| RDP_50cm | — | — | — | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Precipitation | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-
----
-
-## Schema Changes
-
-**2016–2020:** EC-based sensors
-- Columns: `Temp_5cm`, `SM_5cm`, `EC_5cm`, `Temp_50cm`, `SM_50cm`, `EC_50cm`, `Precipitation`
-
-**2021:** Transition year (contains both EC and RDP)
-- Columns: All EC columns + `RDP_5cm`, `RDP_15cm`, `RDP_50cm`, `Temp_15cm`, `SM_15cm`
-
-**2022–2025:** RDP-based sensors with 15 cm depth added
-- Columns: `Temp_5cm`, `SM_5cm`, `RDP_5cm`, `Temp_15cm`, `SM_15cm`, `RDP_15cm`, `Temp_50cm`, `SM_50cm`, `RDP_50cm`, `Precipitation`
-
----
-
-## Usage Recommendations
-
-### Loading Data
-```python
-import pandas as pd
-import numpy as np
-
-# Load a year
-df = pd.read_csv('2017_V6.csv')
-df['timestamp'] = pd.to_datetime(df['timestamp'])
-
-# Handle any remaining string NaNs
-df = df.replace("NaN", np.nan)
-```
-
-### Handling Schema Changes
-For analyses spanning 2016–2025:
-- Use **EC columns** for 2016–2021
-- Use **RDP columns** for 2021–2025
-- Note: 2021 contains both (transition year)
-
-### Time Series Analysis
-```python
-# Resample to daily
-daily = df.set_index('timestamp').resample('D').mean()
-
-# Plot
-import matplotlib.pyplot as plt
-plt.plot(df['timestamp'], df['Temp_5cm'])
-plt.ylabel('Temperature (°C)')
-plt.xlabel('Date')
-plt.show()
-```
-
----
-
-## Quality Assurance
-
-This V6 dataset has undergone:
-1. ✅ Sensor redundancy resolution (A/B selection)
-2. ✅ Outlier removal (physically impossible values)
-3. ✅ Flatline detection (stuck sensors rejected)
-4. ✅ Depth consistency verification
-5. ✅ String error codes replaced with NaN
-
-**Data gaps remain as NaN** (no interpolation or gap-filling performed).
+- **Filenames.** Internal working files use the suffix `_V6.csv` (e.g., `2017_V6.csv`). The Zenodo release uses `_V1.csv`. If you downloaded from Zenodo, either rename the files or update the filename pattern in the scripts.
+- **Hardcoded paths.** All scripts contain absolute paths from the development environment (`/home/sathya-iisc/Documents/...`) at the top. Edit `DATA_DIR` and `OUT_DIR` to match your local setup.
+- **Figure 1 shapefiles.** `Figure1.py` requires shapefiles for India, state boundaries, and the Berambadi catchment. These are not included in this repository. Country and state boundaries are available from open Survey of India sources; the Berambadi catchment boundary can be requested from the corresponding author.
+- **Timestamps.** All timestamps in the dataset are in Indian Standard Time (IST, UTC+05:30).
+- **EC vs RDP.** Electrical conductivity (EC) is reported for 2016–2020. Relative dielectric permittivity (RDP) is reported for 2021–2025. The year 2021 contains both during the sensor transition.
 
 ---
 
 ## Citation
 
-*[Add your citation information here]*
+If you use this code or the dataset, please cite:
+
+> Rao, S., Upadhya, A., Goswami, S., Shaju, A. P., Kandala, R., Upadhyaya, D., Gupta, V., Ruiz, L., and Muddu, S. (2026). A decade of high-frequency soil hydrothermal observations in a semi-arid monsoon catchment (2016–2025) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.18409640
+
+---
+
+## License
+
+Code: MIT License. Dataset: CC-BY 4.0.
 
 ---
 
 ## Contact
 
-*[Add contact information here]*
+**Sekhar Muddu** — sekhar.muddu@gmail.com
+Department of Civil Engineering, Indian Institute of Science, Bengaluru, India
 
----
-
-**README Generated:** 2026-01-26 12:33:37  
-**Script:** `verify_V6_dataset.py`
+For code issues, please open a GitHub issue.
