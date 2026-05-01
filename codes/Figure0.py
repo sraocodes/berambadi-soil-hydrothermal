@@ -16,13 +16,13 @@ import matplotlib.patheffects as pe
 # ---------------------------------------------------------------------
 # CONFIGURATION
 # ---------------------------------------------------------------------
-BASE = "/home/sathya-iisc/Documents/TIMESERIES/V6Analysis"
+BASE = "."
 FILES = {
     "india": f"{BASE}/india_India_Country_Boundary/india_India_Country_Boundary.shp",
     "states": f"{BASE}/india_India_Country_Boundary/State.shp",
     "bera": f"{BASE}/Berambadi.shp"
 }
-OUTPUT = "/home/sathya-iisc/Documents/TIMESERIES/AaryaOUT/Figure1_StudyLocation_Zoom.png"
+OUTPUT = "./Figure1_StudyLocation_Zoom.png"
 
 # Sensor Coordinates
 SENSOR_XY = (76.587991, 11.761146)
