@@ -24,8 +24,8 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # ================= CONFIGURATION =================
-DATA_DIR = '/home/sathya-iisc/Documents/TIMESERIES/Aarya/V6'
-OUT_DIR = '/home/sathya-iisc/Documents/TIMESERIES/AaryaOUT'
+DATA_DIR = './V6'
+OUT_DIR = './OUT'
 
 # THRESHOLDS
 MIN_EVENT_PRECIP = 0.5
